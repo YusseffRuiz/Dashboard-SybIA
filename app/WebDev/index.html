@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard Médico para estadísticas de pacientes por sucursales.">
+    <title>SybIA - Dashboard Analítico</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js y Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <!-- Estilos base -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <div class="dashboard-container">
+        <!-- Header Principal -->
+        <header class="top-nav">
+            <div class="logo-area">
+                <!-- Se espera que el usuario guarde la imagen como logo.png o logo.jpg -->
+                <img src="logo.jpg" alt="SybIA Logo" class="logo-img" onerror="this.onerror=null; this.src='logo.png';">
+                <h1>SybIA</h1>
+            </div>
+            
+            <div class="controls-area">
+                <div class="branch-selector">
+                    <label for="branch-select">Sucursal:</label>
+                    <select id="branch-select" aria-label="Selecciona una sucursal">
+                        <option value="" disabled selected>Cargando sucursales...</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido Central -->
+        <main class="main-content">
+            <!-- Zona de interaccion por voz -->
+            <div class="voice-command-section">
+                <h2 class="section-title">Asistente de Voz Inteligente</h2>
+                <p class="section-subtitle">Realiza una consulta para obtener métricas instantáneas.</p>
+                
+                <div class="example-queries">
+                    <span>Ejemplos de consultas:</span>
+                    <ul>
+                        <li>"Muestra pacientes del último mes"</li>
+                        <li>"Muestrame los pacientes durante los últimos 2 años por cada mes"</li>
+                        <li>"Dame el resumen de mi clínica"</li>
+                    </ul>
+                </div>
+                
+                <div class="record-container">
+                    <button id="record-btn" class="record-btn" aria-label="Grabar comando de voz">
+                        <svg class="mic-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                    </button>
+                    <div id="recording-status" class="status-indicator">Presiona para grabar tu consulta</div>
+                    <div id="recognized-text" class="recognized-text"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-layout">
+                <!-- Panel Lateral -->
+                <aside class="sidebar-panel">
+                    <h3>Gráficas Ocultas</h3>
+                    <p class="sidebar-hint">Las tarjetas que cierres irán acá. Arrástralas hacia la derecha o dales doble-click para restaurarlas.</p>
+                    <div id="hidden-charts-list" class="hidden-list">
+                        <div class="empty-hidden-state">No hay gráficas ocultas</div>
+                    </div>
+                </aside>
+
+                <!-- Zona de gráficos principal -->
+                <div class="metrics-section">
+                <!-- Barra de herramientas Drag & Drop -->
+                <div class="chart-toolbar">
+                    <span class="toolbar-title">Tipos de Gráfica:</span>
+                    <div class="draggable-chart-types">
+                        <div class="chart-type-item" draggable="true" data-type="bar" title="Gráfico de Barras">Barras</div>
+                        <div class="chart-type-item" draggable="true" data-type="pie" title="Gráfico de Pastel">Pastel</div>
+                        <div class="chart-type-item" draggable="true" data-type="line" title="Gráfico de Linea">Línea</div>
+                        <div class="chart-type-item" draggable="true" data-type="doughnut" title="Gráfico de Dona">Dona</div>
+                    </div>
+                    <span class="toolbar-hint">(Arrastra un tipo de gráfica hacia el panel principal)</span>
+                </div>
+
+                <!-- Panel principal de renderizado -->
+                <div class="charts-grid" id="charts-grid">
+                    <div class="empty-state" id="global-empty-state" style="margin-top: 2rem;">
+                        <p>Envía un comando de voz para procesar la información de la base de datos.</p>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- Cierre dashboard-layout -->
+        </main>
+    </div>
+    
+    <!-- Archivo principal JS -->
+    <script src="app.js"></script>
+</body>
+</html>
