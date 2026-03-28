@@ -12,7 +12,7 @@ from app.utils.logger import audit_logger
 from app.utils.validator import SQLValidator
 
 load_dotenv("../data.env")
-LLM_MODEL_FILE = "../../HF_Agents/mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+LLM_MODEL_FILE = os.getenv("LLM_MODEL_FILE")
 app = FastAPI(title="AI Medical Analytics API", version="1.0.0")
 stt = AsrEngine(model_size="medium")
 sql_agent = SQLAgent(llm_model_file=LLM_MODEL_FILE)
