@@ -51,6 +51,39 @@ engine = create_engine(f"mssql+pyodbc:///?odbc_connect={conn_str}")
 async def health():
     return {"message": "AI Medical System Active", "responsible": "Transformación Digital"}
 
+
+@app.get("/health/db")
+async def verify_db_connection():
+    """
+    Endpoint de diagnóstico para verificar la conexión a MSSQL
+    """
+    try:
+        # Extraemos la conexión cruda (raw connection) evadiendo SQLAlchemy Core
+        raw_conn = engine.raw_connection()
+
+        try:
+            cursor = raw_conn.cursor()
+            cursor.execute("SELECT @@VERSION")
+            result = cursor.fetchone()
+
+            return {
+                "status": "success",
+                "network_path": f"{server}:{port}",
+                "message": "Conexión bidireccional establecida por túnel NAT.",
+                "sql_version": result[0]
+            }
+        finally:
+            # Es vital cerrar la conexión cruda manualmente para no saturar el pool
+            cursor.close()
+            raw_conn.close()
+
+    except Exception as e:
+        print(f"[ERROR CRÍTICO DB] Fallo en la conexión hacia {server}:{port}. Detalle: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail=f"Servicio no disponible. Verifica el firewall o las credenciales. Error: {str(e)}"
+        )
+
 @app.get("/get-sucursales")
 @audit_logger(log_name="config_logs") # Reutilizamos su logger dinámico
 async def get_sucursales():

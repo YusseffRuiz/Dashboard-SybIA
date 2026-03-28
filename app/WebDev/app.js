@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Obtener Sucursales (Desde la API SQL en Python) ---
     async function loadBranches() {
         try {
-            const res = await fetch('http://127.0.0.1:8085/get-sucursales');
+            const res = await fetch('https://nonspontaneous-befuddledly-patrina.ngrok-free.dev/get-sucursales', {
+                method: 'GET',
+                headers: {
+                    'ngrok-skip-browser-warning': '69420' // Header para pasar por ngrok
+                }
+            });
             const branches = await res.json();
 
             branchSelect.innerHTML = '<option value="" disabled selected>Selecciona una sucursal</option>';
@@ -112,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('file', blob, 'prueba.wav');
 
-            const response = await fetch(`http://127.0.0.1:8085/analyze-voice?id_cliente=${idCliente}`, {
+            const response = await fetch(`https://nonspontaneous-befuddledly-patrina.ngrok-free.dev/analyze-voice?id_cliente=${idCliente}`, {
                 method: 'POST',
                 headers: { 'accept': 'application/json' },
                 body: formData
@@ -123,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 recordingStatus.textContent = "Consulta exitosa.";
                 recognizedText.textContent = `"${apiData.transcript || 'Procesada'}"`;
 
-                setTimeout(() => { 
-                    recordingStatus.textContent = "Presiona para grabar tu consulta"; 
+                setTimeout(() => {
+                    recordingStatus.textContent = "Presiona para grabar tu consulta";
                 }, 8000);
 
                 const datasets = processChartData(apiData);
