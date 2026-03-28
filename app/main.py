@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from pathlib import Path
 from sqlalchemy import create_engine
 import pandas as pd
 import shutil
@@ -11,9 +12,10 @@ from app.services.ai_service import SQLAgent
 from app.utils.logger import audit_logger
 from app.utils.validator import SQLValidator
 
-load_dotenv("../data.env")
+BASE_DIR = Path(__file__).resolve().parent.parent   # sube un nivel
+ENV_PATH = BASE_DIR / "data.env"
+load_dotenv(ENV_PATH)
 LLM_MODEL_FILE = os.getenv("LLM_MODEL_FILE")
-print(LLM_MODEL_FILE)
 app = FastAPI(title="AI Medical Analytics API", version="1.0.0")
 stt = AsrEngine(model_size="medium")
 sql_agent = SQLAgent(llm_model_file=LLM_MODEL_FILE)
