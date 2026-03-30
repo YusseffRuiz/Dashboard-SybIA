@@ -210,7 +210,7 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
             os.remove(temp_file)
 
 
-WEBDEV_DIR = BASE_DIR / "WebDev"
+WEBDEV_DIR = BASE_DIR / "app" / "WebDev"
 app.mount("/static", StaticFiles(directory=str(WEBDEV_DIR)), name="static")
 
 # 2. Creamos la ruta principal para entregar el HTML
