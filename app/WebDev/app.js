@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Obtener Sucursales (Desde la API SQL en Python) ---
     async function loadBranches() {
         try {
-            const res = await fetch('http://127.0.0.1:5052/get-sucursales', {
+            const res = await fetch('/get-sucursales', {
                 method: 'GET',
                 headers: {
                     'ngrok-skip-browser-warning': '69420' // Header para pasar por ngrok
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('file', blob, 'prueba.wav');
 
-            const response = await fetch(`http://127.0.0.1:5052/analyze-voice?id_cliente=${idCliente}`, {
+            const response = await fetch(`/analyze-voice?id_cliente=${idCliente}`, {
                 method: 'POST',
                 headers: { 'accept': 'application/json' },
                 body: formData
