@@ -96,7 +96,7 @@ async def get_sucursales():
     query = "SELECT DISTINCT id_Cliente, Cliente FROM AI.mv_TotalPacientesXMes ORDER BY Cliente ASC"
     try:
         df = pd.read_sql(query, engine)
-        print(df.to_dict(orient="records"))
+        # print(df.to_dict(orient="records"))
         return df.to_dict(orient="records")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
