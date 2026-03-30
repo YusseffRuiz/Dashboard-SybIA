@@ -1,5 +1,7 @@
 import os
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pathlib import Path
 from sqlalchemy import create_engine
 import pandas as pd
@@ -207,6 +209,9 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         if os.path.exists(temp_file):
             os.remove(temp_file)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8085)
+app.mount("/static", StaticFiles(directory="WebDev"), name="static")
+
+# 2. Creamos la ruta principal para entregar el HTML
+@app.get("/")
+async def serve_frontend():
+    return FileResponse("WebDev/index.html")
