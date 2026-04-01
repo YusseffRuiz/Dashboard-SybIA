@@ -211,18 +211,8 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
 
 
 WEBDEV_DIR = BASE_DIR / "app" / "WebDev"
-app.mount("/static", StaticFiles(directory=str(WEBDEV_DIR)), name="static")
 
-# 2. Creamos la ruta principal para entregar el HTML
-@app.get("/")
-async def serve_frontend():
-    html_file = WEBDEV_DIR / "index.html"
-
-    # Si el archivo no está donde Python cree que está, te dirá la ruta exacta del error
-    if not html_file.exists():
-        raise HTTPException(
-            status_code=404,
-            detail=f"ERROR: No se encuentra el frontend. Python lo está buscando en: {html_file}"
-        )
-
-    return FileResponse(str(html_file))
+if WEBDEV_DIR.exists():
+    app.mount("/", StaticFiles(directory=str(WEBDEV_DIR), html=True), name="frontend")
+else:
+    print(f"⚠️ CRÍTICO: No se encontró la carpeta frontend en {WEBDEV_DIR}")
