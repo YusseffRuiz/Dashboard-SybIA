@@ -1,4 +1,6 @@
 import os
+import traceback
+
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -132,7 +134,7 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         print("Archivo recibido")
 
         # B. Transcripción (Oído)
-        transcript = stt.transcribe(temp_file)
+        transcript,confidence = stt.transcribe(temp_file)
         print(f"transcript realizado: {transcript}")
         if transcript is None:
             raise HTTPException(status_code=400, detail="No transcription found.")
@@ -204,6 +206,8 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         raise http_exception
 
     except Exception as e:
+        traceback.print_exc()  # Esto imprimirá la línea exacta donde falló Python
+        print("----------------------------------\n")
         raise HTTPException(status_code=500, detail=str(e))
 
     finally:
