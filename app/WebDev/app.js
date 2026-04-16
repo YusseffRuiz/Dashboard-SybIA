@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (err) {
             console.error('No se pudo conectar a la API que sirve SQL:', err);
-            const fallbackData = [{ id_Cliente: 1, Cliente: "API Inactiva - Conecta Python 8085" }];
+            const fallbackData = [{ id_Cliente: 1, Cliente: "API Inactiva - Conecta Python 8088" }];
             branchSelect.innerHTML = '<option value="" disabled selected>API de Sucursales no conectada</option>';
             fallbackData.forEach(f => {
                 const opt = document.createElement('option');
@@ -116,8 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const formData = new FormData();
             formData.append('file', blob, 'prueba.wav');
-
-            const response = await fetch(`/analyze-voice?id_cliente=${idCliente}`, {
+            const response = await fetch('/analyze-voice?id_cliente=${idCliente}', {
                 method: 'POST',
                 headers: { 'accept': 'application/json' },
                 body: formData
@@ -149,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Error transmitiendo audio a la API:", error);
-            recordingStatus.textContent = "⛔ Error de conexión con tu API local 127.0.0.1:8085. Revisa la consola.";
+            recordingStatus.textContent = "⛔ Error de conexión con tu API local 127.0.0.1:8088. Revisa la consola.";
         } finally {
             recordBtn.disabled = false;
         }
