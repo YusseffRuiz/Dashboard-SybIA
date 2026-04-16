@@ -143,38 +143,24 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         # Aquí es donde determinamos qué tabla de 'AI.mv_' usar
         query = sql_agent.generate_query(user_text=transcript, client_id=id_cliente, test=False)
         # 1. ¿Es una consulta general o fallida?
-        if "TRIGGER_GENERAL" in query.upper():
-            queries = sql_agent.get_static_dashboard_queries(id_cliente)
-
-            # Ejecución en paralelo (lógica simplificada)
-            df_demo = pd.read_sql(queries["demografia"], engine)
-            df_hist = pd.read_sql(queries["historico"], engine)
-
-            return {
-                "transcript": transcript,
-                "intent": "dashboard_general",
-                "visualization": {
-                    "pie_charts": ["Genero", "Edad", "Parentesco"],
-                    "line_chart": "Tendencia Mensual"
-                },
-                "data": {
-                    "resumen": df_demo.to_dict(orient="records"),
-                    "timeline": df_hist.to_dict(orient="records")
-                }
-            }
         print(query)
         is_valid, message = validator.validate(query)
 
-        if not is_valid:
+        if "TRIGGER_GENERAL" in query.upper() or not is_valid:
             queries = sql_agent.get_static_dashboard_queries(id_cliente)
 
             # Ejecución en paralelo (lógica simplificada)
             df_demo = pd.read_sql(queries["demografia"], engine)
             df_hist = pd.read_sql(queries["historico"], engine)
 
+            if not is_valid:
+                intent = 'Petición no válida o error de entendimiento'
+            else:
+                intent = 'Dashboard General'
+
             return {
                 "transcript": transcript,
-                "intent": "dashboard_general",
+                "intent": intent,
                 "visualization": {
                     "pie_charts": ["Genero", "Edad", "Parentesco"],
                     "line_chart": "Tendencia Mensual"
@@ -184,8 +170,10 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
                     "timeline": df_hist.to_dict(orient="records")
                 }
             }
-            # raise HTTPException(status_code=400, detail=message)
-        # D. Ejecución en SQL Server (Data)
+
+
+
+
         try:
             df = pd.read_sql(query, engine)
         except Exception as e:
