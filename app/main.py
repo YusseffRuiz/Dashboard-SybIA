@@ -138,7 +138,7 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         print(f"transcript realizado: {transcript}")
         if transcript is None:
             raise HTTPException(status_code=400, detail="No transcription found.")
-        print(f"🎙️ Usuario dijo: {transcript}")
+        print(f"Usuario dijo: {transcript}")
 
         # C. Lógica de Enrutamiento (Cerebro Inicial)
         # Aquí es donde determinamos qué tabla de 'AI.mv_' usar
