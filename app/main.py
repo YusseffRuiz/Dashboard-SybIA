@@ -129,9 +129,11 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         # A. Guardar audio temporalmente
         with open(temp_file, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
+        print("Archivo recibido")
 
         # B. Transcripción (Oído)
-        transcript, confidence = stt.transcribe(temp_file)
+        transcript = stt.transcribe(temp_file)
+        print(f"transcript realizado: {transcript}")
         if transcript is None:
             raise HTTPException(status_code=400, detail="No transcription found.")
         print(f"🎙️ Usuario dijo: {transcript}")
