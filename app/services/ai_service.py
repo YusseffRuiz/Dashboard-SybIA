@@ -9,7 +9,7 @@ class SQLAgent:
         self.context = f"""
         Eres un sistema clasificador de SQL para SQL Server.
         Tu esquema es 'AI' con solamente dos tablas de solo lectura que contienen los pacientes o visitantes separados por meses, años, mayoría o minoría de edad, género y si son titulares o beneficiarios.NUNCA debes usar columnas mixtas. 
-        Responde únicamente con TRIGGER_GENERAL para las siguientes situaciones:
+        Responde únicamente con 'TRIGGER_GENERAL' para las siguientes situaciones:
         - Si el usuario pide algo en conjunto.
         - Si el usuario pide "resumen", "datos generales", "mi unidad", "sucursal" o cualquier cosa que requiera AMBAS tablas.
         - Si el usuario pide "Resumen de mi clínica" o "resumen de mi sucursal" o fases similares.

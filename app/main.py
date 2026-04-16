@@ -3,7 +3,6 @@ import traceback
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from pathlib import Path
 from sqlalchemy import create_engine
 import pandas as pd
