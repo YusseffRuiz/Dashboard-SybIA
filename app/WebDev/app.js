@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const formData = new FormData();
             formData.append('file', blob, 'prueba.wav');
-            const response = await fetch('/analyze-voice?id_cliente=${idCliente}', {
+            const response = await fetch(`/analyze-voice?id_cliente=${idCliente}`,{
                 method: 'POST',
                 headers: { 'accept': 'application/json' },
                 body: formData
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error("Error transmitiendo audio a la API:", error);
-            recordingStatus.textContent = "⛔ Error de conexión con tu API local 127.0.0.1:8088. Revisa la consola.";
+            recordingStatus.textContent = "⛔ Error de conexión con tu API local 127.0.0.1:8088 al enviar audio. Revisa la consola.";
         } finally {
             recordBtn.disabled = false;
         }
