@@ -11,12 +11,17 @@ def audit_logger(log_name="audit.log"):
             start_time = time.time()
             success = True
             error_msg = None
-            result = None
+            extracted_transcript = "N/A"
 
             try:
                 # Ejecuta la función original
                 result = await func(*args, **kwargs)
+
+                if result and isinstance(result, dict):
+                    extracted_transcript = result.get("transcript", "N/A")
+
                 return result
+
             except Exception as e:
                 success = False
                 error_msg = str(e)
@@ -33,7 +38,7 @@ def audit_logger(log_name="audit.log"):
                     "success": success,
                     "error": error_msg,
                     # Extraemos el texto del usuario si está en los argumentos
-                    "user_input": kwargs.get("transcript") or (args[0] if args else "N/A")
+                    "user_input": extracted_transcript
                 }
 
                 # Guardado persistente
