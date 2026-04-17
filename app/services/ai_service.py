@@ -123,6 +123,11 @@ class SQLAgent:
         if sql.upper().startswith("SELECT SELECT"):
             sql = sql[7:]
 
+        sql = sql.replace(r"\_", "_")
+
+        # 2. Elimina los bloques de código (ticks) por si Mistral decide agregarlos
+        sql = sql.replace("```sql", "").replace("```", "").strip()
+
         return sql
 
     @staticmethod
