@@ -177,7 +177,7 @@ async def analyze_voice(file: UploadFile = File(...), id_cliente: int = 1):
         try:
             df = pd.read_sql(query, engine)
         except Exception as e:
-            print(f"❌ SQL Server Error: {e}")
+            print(f"SQL Server Error: {e}")
             df = pd.DataFrame()
 
         # E. Respuesta para el Frontend
